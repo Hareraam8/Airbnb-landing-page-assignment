@@ -22,7 +22,7 @@
       margin: 0;
     }
 
-    /* Navbar */
+    /* ── NAVBAR ── */
     .ab-nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
       background: #fff; border-bottom: 1px solid var(--ab-border);
@@ -85,23 +85,25 @@
     }
 
     /* ── HERO ── */
-    .hero {
-      margin-top: 80px;
-      min-height: calc(100vh - 80px);
-      background:
-        linear-gradient(to bottom, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.10) 40%, rgba(0,0,0,0.46) 100%),
-        linear-gradient(180deg,
-          #1d3a4d 0%,
-          #2a5f6f 18%,
-          #3d7d74 38%,
-          #4a8268 55%,
-          #36644f 72%,
-          #1e3d32 100%
-        );
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; padding: 64px 24px 52px;
-    }
+   .hero {
+  margin-top: 80px;
+  min-height: calc(100vh - 80px);
 
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.22) 0%,
+      rgba(0,0,0,0.10) 40%,
+      rgba(0,0,0,0.46) 100%
+    ),
+    url(Air\ bnb\ landing\ page\ bc-image.jpg) center center / cover no-repeat;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px 52px;
+}
     .hero-eyebrow {
       font-size: 12px; font-weight: 700; letter-spacing: 2.5px;
       text-transform: uppercase; color: rgba(255,255,255,0.85); margin-bottom: 16px;
@@ -211,6 +213,22 @@
       font-size: 14px; font-weight: 600; color: var(--ab-text);
       text-decoration: underline; cursor: pointer;
     }
+    .dest-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+  object-position: 75% 40%;
+      display: block;
+     }
+
+     .destination-card {
+    position: relative;
+    height: 280px;        /* fixed height so all cards match */
+    border-radius: 16px;
+    overflow: hidden 
+     }
 
     .dest-grid {
       display: grid;
@@ -218,6 +236,7 @@
       grid-template-rows: 218px 218px 256px;
       gap: 12px;
     }
+    
 
     .dc {
       border-radius: 14px; overflow: hidden; position: relative; cursor: pointer;
@@ -242,13 +261,210 @@
     .dc-nyc       { grid-column: 3; grid-row: 2; }
     .dc-maldives  { grid-column: 1; grid-row: 3; }
 
-    /* destination card gradients */
+/* destination card gradients */
     .dc-santorini { background: linear-gradient(155deg, #8ecae6 0%, #219ebc 22%, #023047 52%, #e8f4f8 78%, #74c2e1 100%); }
     .dc-bali      { background: linear-gradient(145deg, #1a1a2e 0%, #16213e 28%, #2d5016 52%, #386641 78%, #6a994e 100%); }
     .dc-paris     { background: linear-gradient(145deg, #9fb4c7 0%, #6b7fa3 28%, #c4a882 52%, #8a7967 72%, #4a4e69 100%); }
     .dc-kyoto     { background: linear-gradient(145deg, #0a0a0a 0%, #b5179e 24%, #7209b7 48%, #f72585 68%, #480ca8 100%); }
     .dc-nyc       { background: linear-gradient(145deg, #90caf9 0%, #5c8bc8 28%, #2b4c7e 54%, #1a2a3f 78%, #3a3a5c 100%); }
     .dc-maldives  { background: linear-gradient(145deg, #00f5d4 0%, #00bbf9 28%, #4cc9f0 52%, #0077b6 74%, #023e8a 100%); }
+
+    /* ── GUEST FAVORITES ── */
+    .favorites-section { padding: 64px 0 80px; }
+
+    .listing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .listing-card { cursor: pointer; }
+
+    .listing-img-wrap {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      background: var(--ab-light);
+      margin-bottom: 12px;
+    }
+
+    .listing-img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 8px;
+      color: var(--ab-muted);
+      font-size: 13px;
+    }
+
+    .listing-img-placeholder svg { opacity: 0.35; }
+
+    .listing-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: #fff; border-radius: 6px;
+      font-size: 11px; font-weight: 700;
+      padding: 4px 9px; color: var(--ab-text);
+    }
+
+    .listing-heart {
+      position: absolute; top: 10px; right: 10px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+      color: rgba(0,0,0,0.5); transition: color 0.15s;
+    }
+    .listing-heart:hover { color: var(--ab-red); }
+
+    .listing-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
+    .listing-location { font-size: 14px; font-weight: 600; }
+    .listing-rating { font-size: 13px; display: flex; align-items: center; gap: 4px; }
+    .listing-type { font-size: 13px; color: var(--ab-muted); margin-bottom: 2px; }
+    .listing-beds { font-size: 13px; color: var(--ab-muted); margin-bottom: 4px; }
+    .listing-price { font-size: 14px; font-weight: 600; }
+    .listing-price span { font-weight: 400; color: var(--ab-muted); }
+
+    /* ── HOW IT WORKS ── */
+    .how-section {
+      background: var(--ab-light);
+      padding: 72px 0 80px;
+    }
+
+    .how-section .eyebrow,
+    .how-section .section-hd { text-align: center; }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    .how-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 36px 28px;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .how-icon-wrap {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: var(--ab-light);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .how-step { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ab-muted); }
+    .how-title { font-size: 17px; font-weight: 700; margin: 0; }
+    .how-body { font-size: 14px; color: var(--ab-muted); line-height: 1.6; margin: 0; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-section { padding: 72px 0 80px; }
+
+    .testimonials-section .eyebrow,
+    .testimonials-section .section-hd { text-align: center; margin-bottom: 0; }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .testi-card {
+      border: 1px solid var(--ab-border);
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    .testi-stars { display: flex; gap: 3px; margin-bottom: 14px; }
+    .testi-star { color: var(--ab-red); font-size: 16px; }
+    .testi-quote { font-size: 14px; line-height: 1.65; color: var(--ab-text); margin-bottom: 20px; font-style: italic; }
+
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .testi-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--ab-light); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .testi-name { font-size: 14px; font-weight: 600; margin-bottom: 1px; }
+    .testi-date { font-size: 12px; color: var(--ab-muted); }
+
+    /* ── HOST CTA ── */
+    .host-cta-section { padding: 0 0 80px; }
+
+    .host-cta-inner {
+      background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+      border-radius: 24px;
+      padding: 56px 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .host-cta-eyebrow { color: var(--ab-red); font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+    .host-cta-h2 { font-size: 32px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; }
+    .host-cta-sub { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 32px; }
+
+    .host-cta-btn {
+      display: inline-block; background: #fff; color: var(--ab-text);
+      border: none; border-radius: 30px; padding: 14px 28px;
+      font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none;
+      transition: background 0.15s;
+    }
+    .host-cta-btn:hover { background: var(--ab-light); }
+
+    .host-features-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+
+    .host-feature {
+      background: rgba(255,255,255,0.08);
+      border-radius: 14px; padding: 20px;
+    }
+
+    .host-feature-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,56,92,0.25);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .host-feature-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+    .host-feature-sub { font-size: 12px; color: rgba(255,255,255,0.55); }
+
+    /* ── FOOTER ── */
+    .ab-footer {
+      background: var(--ab-light);
+      border-top: 1px solid var(--ab-border);
+      padding: 48px 0 0;
+    }
+
+    .footer-cols {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      padding-bottom: 40px;
+    }
+
+    .footer-col-title { font-size: 13px; font-weight: 700; margin-bottom: 16px; }
+
+    .footer-link {
+      display: block; font-size: 13px; color: var(--ab-muted);
+      text-decoration: none; margin-bottom: 10px; transition: color 0.14s;
+    }
+    .footer-link:hover { color: var(--ab-text); text-decoration: underline; }
+
+    .footer-bottom {
+      border-top: 1px solid var(--ab-border);
+      padding: 20px 0;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 13px; color: var(--ab-muted);
+    }
+
+    .footer-bottom-left { display: flex; align-items: center; gap: 6px; }
+    .footer-bottom-right { display: flex; align-items: center; gap: 16px; }
+    .footer-meta-link { font-size: 13px; color: var(--ab-muted); text-decoration: none; }
+    .footer-meta-link:hover { text-decoration: underline; color: var(--ab-text); }
   </style>
 </head>
 <body>
@@ -304,9 +520,9 @@
   <p class="hero-eyebrow">Over 7 million places to stay</p>
 
   <h1 class="hero-h1">
-    Not all those who<br>
+  Not all those who<br>
     <span class="wander">wander</span><br>
-    are lost.
+     are lost.
   </h1>
 
   <p class="hero-sub">Find unique stays with local hosts in 220+ countries and regions.</p>
@@ -324,11 +540,14 @@
       </div>
       <div class="s-field">
         <div class="s-label">Check in</div>
-        <div class="s-val">mm/dd/yyyy</div>
+        <div class="s-val"></div>
+        <input type="date">
+        
       </div>
       <div class="s-field">
         <div class="s-label">Check out</div>
-        <div class="s-val">mm/dd/yyyy</div>
+        <div class="s-val"></div>
+        <input type="date">
       </div>
       <div class="s-field last-field">
         <div class="s-label">Who</div>
@@ -385,28 +604,31 @@
     <p class="eyebrow">Explore the world</p>
     <div class="d-flex align-items-baseline justify-content-between mb-4">
       <h2 class="section-hd">Top destinations</h2>
-      <a class="show-all" href="#">Show all</a>
+      <a class="show-all" href="listings.html">Show all</a>
     </div>
 
     <div class="dest-grid">
 
       <div class="dc dc-santorini">
+         <img src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&q=80" alt="Santorini">
         <div class="dc-overlay"></div>
         <div class="dc-info">
-          <div class="dc-name">Santorini</div>
+         <div class="dc-name">Santorini</div>
           <div class="dc-meta">Greece · 1,200+ homes</div>
         </div>
       </div>
 
       <div class="dc dc-bali">
+   <img src="https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?w=600&q=80" alt="Bali">
         <div class="dc-overlay"></div>
         <div class="dc-info">
-          <div class="dc-name">Bali</div>
+       <div class="dc-name">Bali</div>
           <div class="dc-meta">Indonesia · 3,400+ homes</div>
         </div>
       </div>
 
       <div class="dc dc-paris">
+         <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80" alt="Paris">
         <div class="dc-overlay"></div>
         <div class="dc-info">
           <div class="dc-name">Paris</div>
@@ -415,14 +637,16 @@
       </div>
 
       <div class="dc dc-kyoto">
+         <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80" alt="Tokyo">
         <div class="dc-overlay"></div>
         <div class="dc-info">
-          <div class="dc-name">Kyoto</div>
+          <div class="dc-name">Tokyo</div>
           <div class="dc-meta">Japan · 950+ homes</div>
         </div>
       </div>
 
       <div class="dc dc-nyc">
+         <img src="https://images.unsplash.com/photo-1522083165195-3424ed129620?w=600&q=80" alt="New York">
         <div class="dc-overlay"></div>
         <div class="dc-info">
           <div class="dc-name">New York</div>
@@ -431,6 +655,7 @@
       </div>
 
       <div class="dc dc-maldives">
+         <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80" alt="Maldives">
         <div class="dc-overlay"></div>
         <div class="dc-info">
           <div class="dc-name">Maldives</div>
@@ -442,8 +667,144 @@
   </div>
 </section>
 
-<!--guest -->
-<section></section>
+<!--DHARMIKA-->
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--SAHANNA-->
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
