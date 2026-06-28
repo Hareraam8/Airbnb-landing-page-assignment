@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airbnb — All stays</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --ab-red:      #FF385C;
+      --ab-dark-red: #E31C5F;
+      --ab-text:     #222222;
+      --ab-muted:    #717171;
+      --ab-border:   #DDDDDD;
+      --ab-light:    #F7F7F7;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      color: var(--ab-text);
+      margin: 0;
+    }
+
+    /* ── NAVBAR ── */
+    .ab-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: #fff; border-bottom: 1px solid var(--ab-border);
+      height: 80px; padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+    }
+
+    .ab-logo {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
+      color: var(--ab-red); text-decoration: none; flex-shrink: 0;
+    }
+
+    /* Compact search bar */
+    .nav-search {
+      display: flex; align-items: center;
+      border: 1px solid var(--ab-border); border-radius: 40px;
+      padding: 8px 8px 8px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      gap: 0; cursor: pointer; transition: box-shadow 0.15s;
+    }
+    .nav-search:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.14); }
+
+    .ns-pill {
+      font-size: 14px; font-weight: 600; padding: 0 16px;
+      border-right: 1px solid var(--ab-border); white-space: nowrap;
+      color: var(--ab-text);
+    }
+    .ns-pill:last-of-type { border-right: none; color: var(--ab-muted); font-weight: 400; }
+
+    .ns-go {
+      background: var(--ab-red); border: none; border-radius: 50%;
+      width: 34px; height: 34px; min-width: 34px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; margin-left: 8px; transition: background 0.15s;
+    }
+    .ns-go:hover { background: var(--ab-dark-red); }
+
+    .ab-nav-link {
+      border: none; background: none; font-size: 14px; font-weight: 600;
+      padding: 10px 16px; border-radius: 24px; cursor: pointer;
+      transition: background 0.15s; color: var(--ab-text); white-space: nowrap;
+    }
+    .ab-nav-link:hover { background: var(--ab-light); }
+
+    .ab-icon-btn {
+      border: none; background: none; padding: 8px; border-radius: 50%;
+      cursor: pointer; transition: background 0.15s; color: var(--ab-text);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ab-icon-btn:hover { background: var(--ab-light); }
+
+    .ab-menu-btn {
+      display: flex; align-items: center; gap: 8px;
+      border: 1px solid var(--ab-border); border-radius: 24px;
+      padding: 6px 8px; background: #fff; cursor: pointer;
+      transition: box-shadow 0.15s; position: relative; flex-shrink: 0;
+    }
+    .ab-menu-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+
+    .ab-avatar {
+      width: 30px; height: 30px; border-radius: 50%; background: #717171;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Dropdown */
+    .ab-dropdown {
+      display: none; position: absolute; top: calc(100% + 12px); right: 0;
+      background: #fff; border: none; border-radius: 12px; min-width: 220px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.14); padding: 8px 0; z-index: 200;
+    }
+    .ab-menu-btn:focus-within .ab-dropdown,
+    .ab-menu-btn:hover .ab-dropdown { display: block; }
+
+    .ab-dropdown-item {
+      display: block; padding: 11px 20px; font-size: 14px;
+      color: var(--ab-text); text-decoration: none; cursor: pointer;
+      transition: background 0.12s;
+    }
+    .ab-dropdown-item:hover { background: var(--ab-light); }
+    .ab-dropdown-item.fw-semibold { font-weight: 600; }
+    .ab-dropdown-divider { border: none; border-top: 1px solid var(--ab-border); margin: 6px 0; }
+
+    /* ── CATEGORY BAR ── */
+    .cat-bar {
+      position: fixed; top: 80px; left: 0; right: 0; z-index: 999;
+      background: #fff; border-bottom: 1px solid var(--ab-border);
+      padding: 0 32px;
+      display: flex; align-items: center; gap: 0;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .cat-bar::-webkit-scrollbar { display: none; }
+
+    .cat-item {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 14px 18px; cursor: pointer; flex-shrink: 0;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: border-color 0.15s, opacity 0.15s;
+      opacity: 0.6; font-size: 12px; font-weight: 500; color: var(--ab-text);
+      text-decoration: none;
+    }
+    .cat-item:hover { opacity: 1; }
+    .cat-item.active { opacity: 1; border-bottom-color: var(--ab-text); }
+
+    .cat-icon {
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; line-height: 1;
+    }
+
+    .filters-btn {
+      margin-left: auto; flex-shrink: 0;
+      display: flex; align-items: center; gap: 8px;
+      border: 1px solid var(--ab-border); border-radius: 10px;
+      padding: 10px 16px; background: #fff; cursor: pointer;
+      font-size: 14px; font-weight: 600; transition: box-shadow 0.15s;
+      color: var(--ab-text);
+    }
+    .filters-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+
+    /* ── MAIN CONTENT ── */
+    .main-content {
+      margin-top: 152px; /* navbar 80 + catbar ~72 */
+      padding: 24px 32px 64px;
+    }
+
+    .results-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .results-count { font-size: 14px; color: var(--ab-muted); }
+    .results-count strong { color: var(--ab-text); }
+
+    .sort-select {
+      border: 1px solid var(--ab-border); border-radius: 8px;
+      padding: 8px 32px 8px 12px; font-size: 14px; font-weight: 600;
+      color: var(--ab-text); background: #fff; cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23222' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+    }
+
+    /* ── LISTING GRID ── */
+    .listing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .listing-card { cursor: pointer; }
+
+    .listing-img-wrap {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      background: var(--ab-light);
+      margin-bottom: 12px;
+    }
+
+    .listing-img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 8px; color: var(--ab-muted); font-size: 13px;
+    }
+    .listing-img-placeholder svg { opacity: 0.35; }
+
+    .listing-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: #fff; border-radius: 6px;
+      font-size: 11px; font-weight: 700;
+      padding: 4px 9px; color: var(--ab-text);
+    }
+
+    .listing-heart {
+      position: absolute; top: 10px; right: 10px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+      color: rgba(0,0,0,0.4); transition: color 0.15s;
+    }
+    .listing-heart:hover { color: var(--ab-red); }
+    .listing-heart.saved { color: var(--ab-red); }
+
+    /* dot indicators */
+    .img-dots {
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 4px;
+    }
+    .img-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.6);
+    }
+    .img-dot.active { background: #fff; }
+
+    .listing-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
+    .listing-location { font-size: 14px; font-weight: 600; }
+    .listing-rating { font-size: 13px; display: flex; align-items: center; gap: 4px; }
+    .listing-type { font-size: 13px; color: var(--ab-muted); margin-bottom: 2px; }
+    .listing-beds { font-size: 13px; color: var(--ab-muted); margin-bottom: 4px; }
+    .listing-price { font-size: 14px; font-weight: 600; }
+    .listing-price span { font-weight: 400; color: var(--ab-muted); }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="ab-nav">
+  <a class="ab-logo" href="index.html">
+    <svg viewBox="0 0 32 32" width="28" height="28" fill="#FF385C" aria-hidden="true">
+      <path d="M16 2C9.92 2 5 7.48 5 13.2c0 8.6 11 18.8 11 18.8s11-10.2 11-18.8C27 7.48 22.08 2 16 2zm0 14.6a3.8 3.8 0 1 1 0-7.6 3.8 3.8 0 0 1 0 7.6z"/>
+    </svg>
+    airbnb
+  </a>
+
+  <div class="nav-search">
+    <span class="ns-pill">Anywhere</span>
+    <span class="ns-pill">Any week</span>
+    <span class="ns-pill">Add guests</span>
+    <button class="ns-go" aria-label="Search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <button class="ab-nav-link">Airbnb your home</button>
+    <button class="ab-icon-btn" aria-label="Select language">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 2C12 2 8 7 8 12s4 10 4 10M12 2c0 0 4 5 4 10s-4 10-4 10M2 12h20"/>
+      </svg>
+    </button>
+    <div class="ab-menu-btn" tabindex="0" role="button" aria-haspopup="true" aria-label="Open menu">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <div class="ab-avatar" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff">
+          <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-5.33 0-8 2.67-8 4v2h16v-2c0-1.33-2.67-4-8-4z"/>
+        </svg>
+      </div>
+      <div class="ab-dropdown" role="menu">
+        <a class="ab-dropdown-item fw-semibold" href="#" role="menuitem">Sign up</a>
+        <a class="ab-dropdown-item" href="#" role="menuitem">Log in</a>
+        <hr class="ab-dropdown-divider">
+        <a class="ab-dropdown-item" href="#" role="menuitem">Airbnb your home</a>
+        <a class="ab-dropdown-item" href="#" role="menuitem">My trips</a>
+        <a class="ab-dropdown-item" href="#" role="menuitem">Wishlist</a>
+        <hr class="ab-dropdown-divider">
+        <a class="ab-dropdown-item" href="#" role="menuitem">Help centre</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ CATEGORY BAR ══ -->
+<div class="cat-bar">
+  <a class="cat-item active" href="#">
+    <div class="cat-icon">🌐</div>
+    All
+  </a>
+  <a class="cat-item" href="#">
+    <div class="cat-icon">🔥</div>
+    Trending
+  </a>
+  <a class="cat-item" href="#">
+    <div class="cat-icon">🏖️</div>
+    Beachfront
+  </a>
+  <a class="cat-item" href="#">
+    <div class="cat-icon">🌲</div>
+    Cabins
+  </a>
+  <a class="cat-item" href="#">
+    <div class="cat-icon">🏔️</div>
+    Amazing views
+  </a>
+  <a class="cat-item" href="#">
+    <div class="cat-icon">🌵</div>
+    Desert
+  </a>
+  <a class="cat-item" href="#">
+    <div class="cat-icon">🌳</div>
+    Treehouses
+  </a>
+  <a class="cat-item" href="#">
+    <div class="cat-icon">🏰</div>
+    Mansions
+  </a>
+  <a class="cat-item" href="#">
+    <div class="cat-icon">⛵</div>
+    Boats
+  </a>
+  <a class="cat-item" href="#">
+    <div class="cat-icon">⛷️</div>
+    Skiing
+  </a>
+  <a class="cat-item" href="#">
+    <div class="cat-icon">🌴</div>
+    Tropical
+  </a>
+  <a class="cat-item" href="#">
+    <div class="cat-icon">⛺</div>
+    Camping
+  </a>
+
+  <button class="filters-btn">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+    Filters
+  </button>
+</div>
+
+<!-- ══ MAIN ══ -->
+<main class="main-content">
+  <div class="results-bar">
+    <p class="results-count"><strong>8 stays</strong> found</p>
+    <select class="sort-select" aria-label="Sort results">
+      <option>Recommended</option>
+      <option>Price: low to high</option>
+      <option>Price: high to low</option>
+      <option>Top rated</option>
+    </select>
+  </div>
+
+  <div class="listing-grid">
+
+    <!-- Card 1 -->
+    <a class="listing-card" href="listing-detail.html" style="text-decoration:none;color:inherit;">
+      <div class="listing-img-wrap">
+        <div class="listing-img-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>Photo placeholder</span>
+        </div>
+        <div class="listing-badge">Guest favorite</div>
+        <button class="listing-heart saved" aria-label="Remove from wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <div class="img-dots">
+          <div class="img-dot active"></div><div class="img-dot"></div><div class="img-dot"></div>
+        </div>
+      </div>
+      <div class="listing-row">
+        <div class="listing-location">Location, Country</div>
+        <div class="listing-rating"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg> 0.00</div>
+      </div>
+      <div class="listing-type">Property type</div>
+      <div class="listing-beds">X beds · X baths</div>
+      <div class="listing-price">$000 <span>/ night</span></div>
+    </a>
+
+    <!-- Card 2 -->
+    <a class="listing-card" href="listing-detail.html" style="text-decoration:none;color:inherit;">
+      <div class="listing-img-wrap">
+        <div class="listing-img-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>Photo placeholder</span>
+        </div>
+        <button class="listing-heart" aria-label="Save to wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <div class="img-dots">
+          <div class="img-dot active"></div><div class="img-dot"></div><div class="img-dot"></div><div class="img-dot"></div>
+        </div>
+      </div>
+      <div class="listing-row">
+        <div class="listing-location">Location, Country</div>
+        <div class="listing-rating"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg> 0.00</div>
+      </div>
+      <div class="listing-type">Property type</div>
+      <div class="listing-beds">X beds · X baths</div>
+      <div class="listing-price">$000 <span>/ night</span></div>
+    </a>
+
+    <!-- Card 3 -->
+    <a class="listing-card" href="listing-detail.html" style="text-decoration:none;color:inherit;">
+      <div class="listing-img-wrap">
+        <div class="listing-img-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>Photo placeholder</span>
+        </div>
+        <button class="listing-heart saved" aria-label="Remove from wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <div class="img-dots">
+          <div class="img-dot active"></div><div class="img-dot"></div>
+        </div>
+      </div>
+      <div class="listing-row">
+        <div class="listing-location">Location, Country</div>
+        <div class="listing-rating"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg> 0.00</div>
+      </div>
+      <div class="listing-type">Property type</div>
+      <div class="listing-beds">X beds · X baths</div>
+      <div class="listing-price">$000 <span>/ night</span></div>
+    </a>
+
+    <!-- Card 4 -->
+    <a class="listing-card" href="listing-detail.html" style="text-decoration:none;color:inherit;">
+      <div class="listing-img-wrap">
+        <div class="listing-img-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>Photo placeholder</span>
+        </div>
+        <div class="listing-badge">Guest favorite</div>
+        <button class="listing-heart" aria-label="Save to wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <div class="img-dots">
+          <div class="img-dot active"></div><div class="img-dot"></div><div class="img-dot"></div>
+        </div>
+      </div>
+      <div class="listing-row">
+        <div class="listing-location">Location, Country</div>
+        <div class="listing-rating"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg> 0.00</div>
+      </div>
+      <div class="listing-type">Property type</div>
+      <div class="listing-beds">X beds · X baths</div>
+      <div class="listing-price">$000 <span>/ night</span></div>
+    </a>
+
+    <!-- Card 5 -->
+    <a class="listing-card" href="listing-detail.html" style="text-decoration:none;color:inherit;">
+      <div class="listing-img-wrap">
+        <div class="listing-img-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>Photo placeholder</span>
+        </div>
+        <div class="listing-badge">Guest favorite</div>
+        <button class="listing-heart" aria-label="Save to wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <div class="img-dots">
+          <div class="img-dot active"></div><div class="img-dot"></div>
+        </div>
+      </div>
+      <div class="listing-row">
+        <div class="listing-location">Location, Country</div>
+        <div class="listing-rating"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg> 0.00</div>
+      </div>
+      <div class="listing-type">Property type</div>
+      <div class="listing-beds">X beds · X baths</div>
+      <div class="listing-price">$000 <span>/ night</span></div>
+    </a>
+
+    <!-- Card 6 -->
+    <a class="listing-card" href="listing-detail.html" style="text-decoration:none;color:inherit;">
+      <div class="listing-img-wrap">
+        <div class="listing-img-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>Photo placeholder</span>
+        </div>
+        <button class="listing-heart" aria-label="Save to wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <div class="img-dots">
+          <div class="img-dot active"></div><div class="img-dot"></div><div class="img-dot"></div><div class="img-dot"></div>
+        </div>
+      </div>
+      <div class="listing-row">
+        <div class="listing-location">Location, Country</div>
+        <div class="listing-rating"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg> 0.00</div>
+      </div>
+      <div class="listing-type">Property type</div>
+      <div class="listing-beds">X beds · X baths</div>
+      <div class="listing-price">$000 <span>/ night</span></div>
+    </a>
+
+    <!-- Card 7 -->
+    <a class="listing-card" href="listing-detail.html" style="text-decoration:none;color:inherit;">
+      <div class="listing-img-wrap">
+        <div class="listing-img-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>Photo placeholder</span>
+        </div>
+        <button class="listing-heart saved" aria-label="Remove from wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <div class="img-dots">
+          <div class="img-dot active"></div><div class="img-dot"></div>
+        </div>
+      </div>
+      <div class="listing-row">
+        <div class="listing-location">Location, Country</div>
+        <div class="listing-rating"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg> 0.00</div>
+      </div>
+      <div class="listing-type">Property type</div>
+      <div class="listing-beds">X beds · X baths</div>
+      <div class="listing-price">$000 <span>/ night</span></div>
+    </a>
+
+    <!-- Card 8 -->
+    <a class="listing-card" href="listing-detail.html" style="text-decoration:none;color:inherit;">
+      <div class="listing-img-wrap">
+        <div class="listing-img-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>Photo placeholder</span>
+        </div>
+        <button class="listing-heart" aria-label="Save to wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <div class="img-dots">
+          <div class="img-dot active"></div><div class="img-dot"></div><div class="img-dot"></div>
+        </div>
+      </div>
+      <div class="listing-row">
+        <div class="listing-location">Location, Country</div>
+        <div class="listing-rating"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg> 0.00</div>
+      </div>
+      <div class="listing-type">Property type</div>
+      <div class="listing-beds">X beds · X baths</div>
+      <div class="listing-price">$000 <span>/ night</span></div>
+    </a>
+
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
