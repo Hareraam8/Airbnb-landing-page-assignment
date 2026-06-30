@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airbnb - Trips (100% Bootstrap)</title>
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-white text-dark">
+
+  <!-- 1. NAVIGATION BAR -->
+  <nav class="navbar navbar-expand-md bg-white border-bottom border-light sticky-top py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+      <!-- Logo -->
+      <a href="#" class="navbar-brand fw-bolder text-danger fs-4 d-flex align-items-center m-0" style="color: #ff385c !important;">
+        <i class="bi bi-geo-alt-fill me-1"></i>airbnb
+      </a>
+
+      <!-- Center Search Bar -->
+      <div class="d-none d-md-flex align-items-center gap-3 border border-secondary-subtle rounded-pill px-4 py-2 shadow-sm small fw-bold">
+        <span>Anywhere</span>
+        <span class="text-black-50">|</span>
+        <span>Any week</span>
+        <span class="text-black-50">|</span>
+        <span class="text-muted fw-normal">Add guests</span>
+        <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; background-color: #ff385c !important;">
+          <i class="bi bi-search small"></i>
+        </div>
+      </div>
+
+      <!-- Right Profile Menu -->
+      <div class="d-flex align-items-center gap-3">
+        <a href="#" class="text-dark text-decoration-none small fw-bold d-none d-lg-inline">Airbnb your home</a>
+        <i class="bi bi-globe fs-5 text-secondary"></i>
+        <button class="btn btn-white border border-secondary-subtle rounded-pill d-flex align-items-center gap-2 px-3 py-1">
+          <i class="bi bi-list fs-5"></i>
+          <i class="bi bi-person-circle fs-4 text-secondary"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <div class="container my-5" style="max-width: 850px;">
+    
+    <!-- Header Title -->
+    <h1 class="fw-bold mb-1 display-6">Trips</h1>
+    <p class="text-muted mb-4 small">Your travel history and upcoming adventures.</p>
+
+    <ul class="nav nav-tabs border-bottom mb-4 gap-4" id="tripTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active text-dark border-0 border-bottom border-2 border-dark px-0 py-2 fw-bold" 
+                id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button" role="tab" aria-controls="upcoming" aria-selected="true"
+                onclick="this.className='nav-link active text-dark border-0 border-bottom border-2 border-dark px-0 py-2 fw-bold'; document.getElementById('past-tab').className='nav-link text-secondary border-0 px-0 py-2 fw-bold'; document.getElementById('cancelled-tab').className='nav-link text-secondary border-0 px-0 py-2 fw-bold';">
+          Upcoming <span class="badge bg-danger rounded-circle ms-1" style="background-color: #ff385c !important;">1</span>
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link text-secondary border-0 px-0 py-2 fw-bold" 
+                id="past-tab" data-bs-toggle="tab" data-bs-target="#past" type="button" role="tab" aria-controls="past" aria-selected="false"
+                onclick="this.className='nav-link active text-dark border-0 border-bottom border-2 border-dark px-0 py-2 fw-bold'; document.getElementById('upcoming-tab').className='nav-link text-secondary border-0 px-0 py-2 fw-bold'; document.getElementById('cancelled-tab').className='nav-link text-secondary border-0 px-0 py-2 fw-bold';">
+          Past
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link text-secondary border-0 px-0 py-2 fw-bold" 
+                id="cancelled-tab" data-bs-toggle="tab" data-bs-target="#cancelled" type="button" role="tab" aria-controls="cancelled" aria-selected="false"
+                onclick="this.className='nav-link active text-dark border-0 border-bottom border-2 border-dark px-0 py-2 fw-bold'; document.getElementById('upcoming-tab').className='nav-link text-secondary border-0 px-0 py-2 fw-bold'; document.getElementById('past-tab').className='nav-link text-secondary border-0 px-0 py-2 fw-bold';">
+          Cancelled
+        </button>
+      </li>
+    </ul>
+
+    <!-- 3. TABS CONTENT CONTAINER -->
+    <div class="tab-content" id="tripTabContent">
+      
+      <!-- ================= TAB 1: UPCOMING CONTENT ================= -->
+      <div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-labelledby="upcoming-tab">
+        
+        <!-- Upcoming Card (Screenshot 2026-06-26 104713.png) -->
+        <div class="card border rounded-4 overflow-hidden shadow-sm pt-0">
+          <div class="row g-0">
+            <!-- Image with Zoom effect -->
+            <div class="col-md-4 overflow-hidden" style="height: 240px;">
+              <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=400&q=80" 
+                   class="w-100 h-100 object-fit-cover" 
+                   style="transition: transform 0.3s ease;" 
+                   onmouseover="this.style.transform='scale(1.05)'" 
+                   onmouseout="this.style.transform='scale(1)'" 
+                   alt="Santorini">
+            </div>
+            <!-- Content Area -->
+            <div class="col-md-8 p-4 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <span class="text-uppercase text-danger fw-bold small tracking-wider" style="font-size: 11px; color: #ff385c !important;">Upcoming</span>
+                    <h4 class="fw-bold my-1 text-dark">Cliffside Villa with Infinity Pool</h4>
+                    <p class="text-muted small mb-3"><i class="bi bi-geo-alt me-1"></i>Santorini, Greece</p>
+                  </div>
+                  <!-- Calendar Icon at corner -->
+                  <div class="p-2 rounded-3" style="background-color: #fff0f3; color: #ff385c;">
+                    <i class="bi bi-calendar-event fs-5"></i>
+                  </div>
+                </div>
+
+                <!-- Check-in & Out Details -->
+                <div class="bg-light rounded-3 p-3 row g-2 text-center text-sm-start mb-3 mx-0">
+                  <div class="col-sm-4">
+                    <div class="text-uppercase text-muted fw-bold" style="font-size: 11px;">Check-in</div>
+                    <div class="fw-semibold text-dark small">Jul 15, 2026</div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="text-uppercase text-muted fw-bold" style="font-size: 11px;">Checkout</div>
+                    <div class="fw-semibold text-dark small">Jul 20, 2026</div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="text-uppercase text-muted fw-bold" style="font-size: 11px;">Guests</div>
+                    <div class="fw-semibold text-dark small">2 guests</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Bottom Footer -->
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 pt-3 border-top">
+                <div>
+                  <span class="text-muted d-block small" style="font-size: 11px;">Confirmation code</span>
+                  <span class="fw-bold text-uppercase text-dark">HMAZ7X</span>
+                </div>
+                <div>
+                  <span class="text-muted d-block text-sm-end small" style="font-size: 11px;">Total paid</span>
+                  <span class="fw-bold fs-5 text-dark">$2,520</span>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-outline-dark btn-sm fw-bold px-3 py-2 rounded-2">View details</button>
+                  <button class="btn btn-danger btn-sm fw-bold px-3 py-2 rounded-2" style="background-color: #ff385c !important; border: none;">Manage booking</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ================= TAB 2: PAST CONTENT ================= -->
+      <div class="tab-pane fade" id="past" role="tabpanel" aria-labelledby="past-tab">
+        <div class="d-flex flex-column gap-4">
+          
+          <!-- Card 1: Bali (Screenshot 2026-06-26 104740.png) -->
+          <div class="card border rounded-4 overflow-hidden shadow-sm pt-0">
+            <div class="row g-0">
+              <div class="col-md-4 overflow-hidden" style="height: 240px;">
+                <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&q=80" class="w-100 h-100 object-fit-cover" style="transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" alt="Bali">
+              </div>
+              <div class="col-md-8 p-4 d-flex flex-column justify-content-between">
+                <div>
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <span class="text-uppercase text-muted fw-bold small tracking-wider" style="font-size: 11px;">Completed</span>
+                      <h4 class="fw-bold my-1 text-dark">Beachfront Bali Retreat</h4>
+                      <p class="text-muted small mb-3"><i class="bi bi-geo-alt me-1"></i>Seminyak, Bali</p>
+                    </div>
+                    <!-- Green Check-Circle at corner -->
+                    <i class="bi bi-check-circle-fill text-success fs-4"></i>
+                  </div>
+                  <div class="bg-light rounded-3 p-3 row g-2 text-center text-sm-start mb-3 mx-0">
+                    <div class="col-sm-4"><div class="text-uppercase text-muted fw-bold" style="font-size: 11px;">Check-in</div><div class="fw-semibold text-dark small">Mar 3, 2026</div></div>
+                    <div class="col-sm-4"><div class="text-uppercase text-muted fw-bold" style="font-size: 11px;">Checkout</div><div class="fw-semibold text-dark small">Mar 8, 2026</div></div>
+                    <div class="col-sm-4"><div class="text-uppercase text-muted fw-bold" style="font-size: 11px;">Guests</div><div class="fw-semibold text-dark small">4 guests</div></div>
+                  </div>
+                </div>
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 pt-3 border-top">
+                  <div><span class="text-muted d-block small" style="font-size: 11px;">Confirmation code</span><span class="fw-bold text-uppercase text-dark">BALI92</span></div>
+                  <div><span class="text-muted d-block text-sm-end small" style="font-size: 11px;">Total paid</span><span class="fw-bold fs-5 text-dark">$1,860</span></div>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-outline-dark btn-sm fw-bold px-3 py-2 rounded-2">View details</button>
+                    <button class="btn btn-dark btn-sm fw-bold px-3 py-2 rounded-2">Leave review</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Kyoto (Screenshot 2026-06-26 104825.png) -->
+          <div class="card border rounded-4 overflow-hidden shadow-sm pt-0">
+            <div class="row g-0">
+              <div class="col-md-4 overflow-hidden" style="height: 240px;">
+                <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=400&q=80" class="w-100 h-100 object-fit-cover" style="transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" alt="Kyoto">
+              </div>
+              <div class="col-md-8 p-4 d-flex flex-column justify-content-between">
+                <div>
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <span class="text-uppercase text-muted fw-bold small tracking-wider" style="font-size: 11px;">Completed</span>
+                      <h4 class="fw-bold my-1 text-dark">Kyoto Machiya Townhouse</h4>
+                      <p class="text-muted small mb-3"><i class="bi bi-geo-alt me-1"></i>Kyoto, Japan</p>
+                    </div>
+                    <i class="bi bi-check-circle-fill text-success fs-4"></i>
+                  </div>
+                  <div class="bg-light rounded-3 p-3 row g-2 text-center text-sm-start mb-3 mx-0">
+                    <div class="col-sm-4"><div class="text-uppercase text-muted fw-bold" style="font-size: 11px;">Check-in</div><div class="fw-semibold text-dark small">Jan 10, 2026</div></div>
+                    <div class="col-sm-4"><div class="text-uppercase text-muted fw-bold" style="font-size: 11px;">Checkout</div><div class="fw-semibold text-dark small">Jan 14, 2026</div></div>
+                    <div class="col-sm-4"><div class="text-uppercase text-muted fw-bold" style="font-size: 11px;">Guests</div><div class="fw-semibold text-dark small">2 guests</div></div>
+                  </div>
+                </div>
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 pt-3 border-top">
+                  <div><span class="text-muted d-block small" style="font-size: 11px;">Confirmation code</span><span class="fw-bold text-uppercase text-dark">TOKY44</span></div>
+                  <div><span class="text-muted d-block text-sm-end small" style="font-size: 11px;">Total paid</span><span class="fw-bold fs-5 text-dark">$620</span></div>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-outline-dark btn-sm fw-bold px-3 py-2 rounded-2">View details</button>
+                    <button class="btn btn-dark btn-sm fw-bold px-3 py-2 rounded-2">Leave review</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Red Adventure Banner Only Inside Past Tab (Screenshot 2026-06-26 104825.png) -->
+          <div class="p-5 text-center rounded-4 border mt-2" style="background: linear-gradient(135deg, #fff0f3 0%, #ffe5ec 100%); border-color: #ffccd5 !important;">
+            <div class="fs-2 mb-2">🌍</div>
+            <h5 class="fw-bold text-dark mb-1">Ready for your next adventure?</h5>
+            <p class="text-muted small mb-3">You've visited 2 amazing places. Where to next?</p>
+            <button class="btn btn-danger fw-bold px-4 py-2" style="background-color: #ff385c !important; border: none;">Explore stays</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ================= TAB 3: CANCELLED CONTENT ================= -->
+      <!-- (Screenshot 2026-06-26 104845.png) -->
+      <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
+        <div class="text-center py-5 px-3 border border-secondary-subtle bg-light rounded-4">
+          <div class="fs-1 mb-2">🧳</div>
+          <h5 class="fw-bold text-dark mb-1">No cancelled trips found</h5>
+          <p class="text-muted small mb-4">Time to plan your next adventure!</p>
+          <button class="btn btn-dark fw-bold px-4 py-2 rounded-3 btn-sm">Start exploring</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
