@@ -1,0 +1,59 @@
+
+body {
+    color: #222222;
+}
+
+.leading-relaxed {
+    line-height: 1.6;
+}
+
+.fs-8 {
+    font-size: 10px;
+}
+
+.text-capitalize {
+    text-transform: capitalize;
+}
+
+
+.gallery-img-wrap {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+}
+
+.gallery-img-wrap img {
+    transition: filter 0.2s ease;
+}
+
+.gallery-img-wrap:hover img {
+    filter: brightness(0.9);
+}
+
+.main-img {
+    height: 416px;
+}
+
+.sub-img {
+    height: 204px;
+}
+
+.sticky-top-card {
+    position: sticky;
+    top: 100px;
+    z-index: 10;
+}
+
+.check-btn {
+    background-color: #e61e4d !important;
+    border: none !important;
+}
+
+.check-btn:hover {
+    background-color: #d1113e !important;
+}
+
+.btn-white {
+    background-color: #ffffff !important;
+    border-color: #222222 !important;
+}
